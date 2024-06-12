@@ -1,1 +1,3 @@
-/.DS_Store
+*.DS_Store
+*.vital
+/00_trash
