@@ -10,7 +10,6 @@ astetik
 chances
 kerasplotlib
 requests
-scikit-learn
 statsmodels>=0.11.0
 tqdm
 wrangle
