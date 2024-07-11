@@ -1,0 +1,11 @@
+Variance ReLU1:
+Prediction:  38.11209
+Ground Truth:  704.59863
+
+Variance: ReLU
+Prediction:  26.921188
+Ground Truth:  704.59863
+
+Variance: Sigmoid
+Prediction:  84.617546
+Ground Truth:  704.59863
