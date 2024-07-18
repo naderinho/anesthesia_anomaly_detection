@@ -2,7 +2,7 @@ def in_google_colab():
     """Checks if the code is running in Google Colab
 
     Returns:
-        bool: _description_
+        bool: If True, the code is running in Google Colab environment
     """
     try:
         import google.colab

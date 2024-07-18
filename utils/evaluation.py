@@ -1,9 +1,13 @@
+"""
+This module contains functions to evaluate the performance of a trained model.
+"""
+
 import numpy as np
 import pandas as pd
 import scipy.stats
 pd.options.display.float_format = '{:,.2f}'.format
 
-def get_anaesthesia_phases(dataset: np.array, N: int = 60):
+def get_anaesthesia_phases(dataset: np.array, N: int = 60) -> dict:
     """
     A function to detect the anesthesia phases in a given dataset. The function calculates the
     moving average of the propofol rate and detects the start and end of the anesthesia phases
@@ -23,9 +27,24 @@ def get_anaesthesia_phases(dataset: np.array, N: int = 60):
         index1 = np.argmax(conv < 40) + 2 * N
         index2 = np.where(conv > 5)[0][-1] - N
         anesthesia_phases.append([index1, index2])
+
     return anesthesia_phases
 
-def phases_report(prediction: np.array, groundtruth: np.array, propofolrate: np.array):
+def phases_report(prediction: np.array, groundtruth: np.array, propofolrate: np.array) -> pd.DataFrame:
+    """
+    From a given BIS prediction with the corresponding groundtruth values, this function
+    calculates the MSE, MAE and RMSE for the whole dataset and the three anesthesia phases
+    (Induction, Maintenance, Recovery). The function also calculates the same metrics for a
+    baseline model that always predicts a BIS value of 41.0.
+
+    Args:
+        prediction (np.array): predicted BIS values
+        groundtruth (np.array): measured BIS values
+        propofolrate (np.array): infusion rate of propofol 20mg/ml in ml/h
+
+    Returns:
+        pd.DataFrame: with the calculated metrics for the whole dataset and the three anesthesia phases
+    """
 
     baseline = np.ones(groundtruth.shape) * 41.0
 
