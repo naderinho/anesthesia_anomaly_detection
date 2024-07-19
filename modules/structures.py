@@ -161,6 +161,7 @@ class VitalImport(DatasetImport):
         self.tracks = []
         self.filter = [0,0,0]
         self.name = 'Vital'
+        self.filterON = True
 
     def importFunction(self, filepath: str):
 
@@ -168,6 +169,7 @@ class VitalImport(DatasetImport):
 
         data = vitaldata.to_pandas(track_names=self.tracks,interval=self.interval)
         data = data + 0.00001 # adds small value to avoid mix up with padding values
-        data = outlierfilter(data, threshhold = self.filter[0] , iterations = 2, min = self.filter[1], max = self.filter[2])
+        if self.filterON:
+            data = outlierfilter(data, threshhold = self.filter[0] , iterations = 2, min = self.filter[1], max = self.filter[2])
 
         return data, self.name
