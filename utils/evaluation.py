@@ -86,6 +86,17 @@ def phases_report(prediction: np.array, groundtruth: np.array, propofolrate: np.
 
     return results
 
+def phases_report_std(report: pd.DataFrame, prediction: np.array, groundtruth: np.array, propofolrate: np.array) -> pd.DataFrame:
+    sets = prediction.shape[0]
+
+    evaluation = np.zeros((sets,4,6))
+
+    for i in range(0,sets):
+        evaluation[i] = phases_report(prediction[i:i+1], groundtruth[i:i+1], propofolrate[i:i+1])
+
+    data = np.std(evaluation, axis=0)
+    return pd.DataFrame(data, index=report.index, columns=report.columns)
+
 def correlation(groundtruth, prediction, correlation_func = scipy.stats.spearmanr):
     test_correlation = []
     baseline_correlation = []

@@ -38,6 +38,7 @@ class DatasetImport():
         self.test_dataset = None
 
         self.index = pd.read_csv(self.datasetpath +'dataset.csv', index_col=0).index.to_numpy()
+        self.train_index, self.validation_index, self.test_index = self.split(self.index)
 
     def save(self, filename: str):
         """
