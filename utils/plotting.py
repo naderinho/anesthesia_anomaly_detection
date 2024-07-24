@@ -103,7 +103,7 @@ def single_prediction_plot(case: int, index: np.array, groundtruth: np.array, pr
 
     # Limits
     ax.set_ylim(bottom=0, top=100)
-    ax.set_xlim(left=0, right=250)
+    ax.set_xlim(left=0, right=time[-1])
 
     # Einheiten auf x-Achse
     xunit = 'min'
@@ -123,41 +123,39 @@ def single_prediction_plot(case: int, index: np.array, groundtruth: np.array, pr
 
     plt.grid(True, linewidth=1.0)
 
+    x = ax.get_xticks()[-1] * 1.05
+    x2 = ax.get_xticks()[-1] * 1.3
+
     ### Show prediction error
     if error is not None:
         error_calc = phases_report(prediction[j:j+1], groundtruth[j:j+1], infusion[j:j+1])[error]
 
-        plt.text(262, 50, s= error + ':', fontweight='bold')
-        plt.text(262, 36, s='Gesamt:')
-        plt.text(262, 24, s='Einleitung:')
-        plt.text(262, 12, s='Narkose:')
-        plt.text(262, 0,  s='Ausleitung:')
-        plt.text(262, -22,  s='Case-ID:')
+        plt.text(x, 50, s= error + ':', fontweight='bold')
+        plt.text(x, 36, s='Gesamt:')
+        plt.text(x, 24, s='Einleitung:')
+        plt.text(x, 12, s='Narkose:')
+        plt.text(x, 0,  s='Ausleitung:')
+        plt.text(x, -22,  s='Case-ID:')
 
-        plt.text(330, 36, s='{:.2f}'.format(error_calc['All']))
-        plt.text(330, 24, s='{:.2f}'.format(error_calc['Induction']))
-        plt.text(330, 12, s='{:.2f}'.format(error_calc['Maintenance']))
-        plt.text(330, 0,  s='{:.2f}'.format(error_calc['Recovery']))
-        plt.text(330, -22,s=str(case))
+        plt.text(x2, 36, s='{:.2f}'.format(error_calc['All']))
+        plt.text(x2, 24, s='{:.2f}'.format(error_calc['Induction']))
+        plt.text(x2, 12, s='{:.2f}'.format(error_calc['Maintenance']))
+        plt.text(x2, 0,  s='{:.2f}'.format(error_calc['Recovery']))
+        plt.text(x2, -22,s=str(case))
     else: 
         sex = cases.loc[case]['sex'].replace("M", "Männlich").replace("F", "Weiblich")
         
-        plt.text(262, 50, s='Fallinformationen:', fontweight='bold')
-        plt.text(262, 36, s='Case ID: ' + str(case))
-        plt.text(262, 24, s='Alter: ' + str(int(cases.loc[case]['age'])) + ' Jahre')
-        plt.text(262, 12, s='Geschlecht: ' + sex)
-        plt.text(262, 0,  s='BMI: ' + str(cases.loc[case]['bmi']))
+        plt.text(x, 50, s='Fallinformationen:', fontweight='bold')
+        plt.text(x, 36, s='Case ID: ' + str(case))
+        plt.text(x, 24, s='Alter: ' + str(int(cases.loc[case]['age'])) + ' Jahre')
+        plt.text(x, 12, s='Geschlecht: ' + sex)
+        plt.text(x, 0,  s='BMI: ' + str(cases.loc[case]['bmi']))
 
     ### Legend
     dy = 0
     if infusion is None:
         dy = 0.1
     plt.legend(loc='lower center', bbox_to_anchor=(1.25, 0.6+dy))
-
-    if filename != None:
-        plt.savefig(filename, bbox_inches='tight', pad_inches=0.2, format='pdf')
-
-    return plt
 
     if filename != None:
         plt.savefig(filename, bbox_inches='tight', pad_inches=0.2, format='pdf')
@@ -241,7 +239,7 @@ def full_histogramm_plot(groundtruth, prediction,  filename: str = None):
     # Einheiten auf y-Achse
     yunit = '--'
     ticks = ax.get_yticks()
-    ticks = [float(tick) for tick in ticks]
+    ticks = [float('{:.3f}'.format(tick)) for tick in ticks]
     ticks_with_units = [yunit if i == len(ticks) - 2 else ticks[i] for i in range(len(ticks))]
     ax.set_yticks(ticks)
     ax.set_yticklabels(ticks_with_units)

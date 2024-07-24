@@ -94,6 +94,13 @@ def phases_report_std(report: pd.DataFrame, prediction: np.array, groundtruth: n
     for i in range(0,sets):
         evaluation[i] = phases_report(prediction[i:i+1], groundtruth[i:i+1], propofolrate[i:i+1])
 
+    # Prediction RMSE min/max (5)
+
+    table_index = ['All     ', 'Induction', 'Maintenance', 'Recovery']
+
+    for j, phase in enumerate(table_index):
+        print(phase, '\tmin: \t', np.argmin(evaluation[:,j,5]), '\tmax: \t', np.argmax(evaluation[:,j,5])),'(', '{:.3f}'.format(np.max(evaluation[:,j,5]))
+
     data = np.std(evaluation, axis=0)
     return pd.DataFrame(data, index=report.index, columns=report.columns)
 
