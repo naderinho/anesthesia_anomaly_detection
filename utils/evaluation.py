@@ -86,6 +86,33 @@ def phases_report(prediction: np.array, groundtruth: np.array, propofolrate: np.
 
     return results
 
+def MSE_phases(prediction: np.array, groundtruth: np.array, propofolrate: np.array) -> pd.DataFrame:
+
+    phases = get_anaesthesia_phases(dataset = propofolrate)
+
+    # Create the three datasets
+    all_pred, induction_pred, maintenance_pred, recovery_pred = np.copy(prediction), np.copy(prediction), np.copy(prediction), np.copy(prediction)
+    all_pred[groundtruth == 0.0] = np.nan
+
+    for i, phase in enumerate(phases):
+        induction_pred[i,phase[0]:-1,:] = np.nan
+        maintenance_pred[i,0:phase[0],:] = np.nan
+        maintenance_pred[i,phase[1]:-1,:] = np.nan
+        recovery_pred[i,0:phase[1],:] = np.nan
+        recovery_pred[i,np.where(groundtruth[i] == 0)[0][0]:-1,:] = np.nan
+
+
+    table_index = ['All', 'Induction', 'Maintenance', 'Recovery']
+
+    results = pd.DataFrame(index=table_index, columns=['Prediction MSE'])
+
+    for i, section in enumerate([all_pred, induction_pred, maintenance_pred, recovery_pred]):
+        results.loc[table_index[i]] = [
+            np.nanmean(np.square(groundtruth - section)),           # MSE Prediction
+        ]
+
+    return results
+
 def phases_report_std(report: pd.DataFrame, prediction: np.array, groundtruth: np.array, propofolrate: np.array) -> pd.DataFrame:
     sets = prediction.shape[0]
 
