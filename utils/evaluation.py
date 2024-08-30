@@ -9,7 +9,7 @@ pd.options.display.float_format = '{:,.2f}'.format
 
 def get_anaesthesia_phases(dataset: np.array, N: int = 60) -> dict:
     """
-    A function to detect the anesthesia phases in a given dataset. The function calculates the
+    A function to detect the anesthesia phases based on TIVA in a given dataset. The function calculates the
     moving average of the propofol rate and detects the start and end of the anesthesia phases
     by detecting the first and last occurence of a propofol rate below 40 ml/h and above 5 ml/h.
 
@@ -26,6 +26,30 @@ def get_anaesthesia_phases(dataset: np.array, N: int = 60) -> dict:
         conv = np.convolve(data[:,0], np.ones(N)/N, mode='valid')
         index1 = np.argmax(conv < 40) + 2 * N
         index2 = np.where(conv > 5)[0][-1] - N
+        anesthesia_phases.append([index1, index2])
+
+    return anesthesia_phases
+
+def get_anaesthesia_phases_balanced(bis_dataset: np.array ,mac_dataset: np.array, N: int = 60) -> dict:
+    """
+    A function to detect the anesthesia phases based on a balanced anaesthesia in a given dataset. The function calculates the
+    moving average of the propofol rate and detects the start and end of the anesthesia phases
+    by detecting the first and last occurence of a propofol rate below 40 ml/h and above 5 ml/h.
+
+    Args:
+        dataset (np.array): Propofol rate dataset
+        N (int): Number of samples to average
+
+    Returns:
+        dict: Dict where each key contains a List of the end index of induction and start index of the recovery phases
+    """
+    anesthesia_phases = []
+    
+    for bis, mac in zip(bis_dataset, mac_dataset):
+        conv_bis = np.convolve(bis[:,0], np.ones(N)/N, mode='valid')
+        conv_mac = np.convolve(mac[:,0], np.ones(N)/N, mode='valid')
+        index1 = np.argmax(conv_bis < 60) + 2 * N
+        index2 = np.where(conv_mac > 0.5)[0][-1] - N
         anesthesia_phases.append([index1, index2])
 
     return anesthesia_phases
