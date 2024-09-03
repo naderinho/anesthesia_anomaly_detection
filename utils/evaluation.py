@@ -154,19 +154,3 @@ def phases_report_std(report: pd.DataFrame, prediction: np.array, groundtruth: n
 
     data = np.std(evaluation, axis=0)
     return pd.DataFrame(data, index=report.index, columns=report.columns)
-
-def correlation(groundtruth, prediction, correlation_func = scipy.stats.spearmanr):
-    test_correlation = []
-    baseline_correlation = []
-
-    for ground, pred in zip(groundtruth, prediction):
-        end = np.where(ground == 0)[0][0]
-
-        x = ground[:end,0]
-        y1 = pred[:end,0]
-        y2 = np.ones(end) * 41.0
-        
-        test_correlation.append(scipy.stats.spearmanr(x, y1).correlation)
-        baseline_correlation.append(scipy.stats.spearmanr(x, y1).correlation)
-    
-    return np.array(test_correlation), np.array(baseline_correlation)
