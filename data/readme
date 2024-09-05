@@ -2,3 +2,47 @@
 
 dataset01:
 - totale intravenöse Anästhesie, 155 Datensätze
+- Patienteninformationen
+- Vitaldaten
+  - BIS
+  - Blutdruck (mean,dia,sys)
+  - etCO2
+  - Heartrate
+  - SpO2
+
+dataset02:
+- totale intravenöse Anästhesie, 155 Datensätze
+- Patienteninformationen
+- Vitaldaten
+  - BIS
+  - Blutdruck (mean,dia,sys)
+  - etCO2
+  - Heartrate
+  - SpO2
+- Medikamente
+  - Propofol
+  - Remifentanyl
+
+dataset03:
+- balancierte Anästhesie, 262 Datensätze
+- Patienteninformationen
+- Vitaldaten
+  - BIS
+  - Blutdruck (mean,dia,sys)
+  - etCO2
+  - Heartrate
+  - SpO2
+- Medikamente
+  - Sevofluran
+
+dataset04:
+- totale intravenöse Anästhesie, 102 Datensätze, 51 M, 51 W
+- Patienteninformationen
+- Vitaldaten
+  - BIS
+  - Blutdruck (mean,dia,sys)
+  - etCO2
+  - Heartrate
+  - SpO2
+- Medikamente
+  - Propofol
